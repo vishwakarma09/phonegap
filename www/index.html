@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <title>Hello World</title>
+		
+		<script src="resources/jquery.min.js"></script>
+		<link href="resources/select2.min.css" rel="stylesheet" />
+		<script src="resources/select2.min.js"></script>
+		<script src="resources/home.js"></script>
+
+		<link href="resources/bootstrap.min.css" rel="stylesheet" />
+		<script src="resources/bootstrap.min.js"></script>
+		
+		<script type="text/javascript" charset="utf-8">
+			
+		function onLoad() {
+			document.addEventListener("deviceready", onDeviceReady, false);
+		/*	document.addEventListener("resume", onResume, false);
+			document.addEventListener("pause", onPause, false);
+			document.addEventListener("online", onOnline, false);
+			document.addEventListener("backbutton", onBackKeyDown, false);
+			document.addEventListener("menubutton", onMenuKeyDown, false);
+			document.addEventListener("searchbutton", onSearchKeyDown, false);
+			document.addEventListener("startcallbutton", onStartCallKeyDown, false);
+			document.addEventListener("endcallbutton", onEndCallKeyDown, false);
+			document.addEventListener("volumedownbutton", yourCallbackFunction, false);
+			document.addEventListener("volumedownbutton", onVolumeDownKeyDown, false);
+			document.addEventListener("volumeupbutton", onVolumeUpKeyDown, false);
+		*/	}
+		
+		function populateDB(tx) {
+			 tx.executeSql('DROP TABLE IF EXISTS DEMO');
+			 tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id unique, data)');
+			 tx.executeSql('INSERT INTO DEMO (id, data) VALUES (1, "First row")');
+			 tx.executeSql('INSERT INTO DEMO (id, data) VALUES (2, "Second row")');
+		}
+		
+		function errorCB(tx, err) {
+			alert("Error processing SQL: "+err);
+		}
+		function successCB() {
+			alert("success!");
+		}
+		
+		function onDeviceReady() {
+		//	var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
+		//	db.transaction(populateDB, errorCB, successCB);
+		
+		//	navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+		//	destinationType: Camera.DestinationType.FILE_URI });
+		
+			$.post( "http://52.18.12.164/phonegap/index.html", function( data ) {
+			  $( ".result" ).html( data );
+			});
+		}
+		/*
+		function onResume() {
+			alert('I knew you were gonna miss me!');
+			return false;
+		}
+		function onPause() {}
+		function onOnline() {
+			alert('chat with me honey!');
+			return false;	
+		}
+		function onBackKeyDown(){
+			alert('where you going honey!');
+			return false;
+		}
+		function onMenuKeyDown(){
+			alert('pressing on menu!');
+			return false;
+		}
+		function onSearchKeyDown(){
+			alert('wat you searching honey!');
+			return false;
+		}
+		function onStartCallKeyDown(){
+			alert('calling someone');
+			return false;
+		}
+		function onEndCallKeyDown(){
+			alert('You did a good job!');
+			return false;
+		}
+		function onVolumeDownKeyDown(){
+			alert('Yes I was speaking low!');
+			return false;
+		}
+		function onVolumeUpKeyDown(){
+			alert('Was I too loud honey?');
+			return false;
+		}
+		*/
+		function alertDismissed() {}
+		function showAlert() {
+			navigator.notification.alert(
+				'You are the winner!',  // message
+				alertDismissed,         // callback
+				'Game Over',            // title
+				'Done'                  // buttonName
+			);
+		}
+		
+		function onSuccess(imageURI) {
+			alert(imageURI);
+		}
+
+		function onFail(message) {
+			alert('Failed because: ' + message);
+		}
+    </script>
+	
+    </head>
+    <body onload="onLoad()">
+	<p><a href="#" onclick="showAlert(); return false;">Show Alert</a></p>
+    
+	<div class="content"></div>
+	
+	<script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript">
+		app.initialize();
+	</script>
+    </body>
+</html>
