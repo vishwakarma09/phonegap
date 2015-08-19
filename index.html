@@ -32,16 +32,15 @@
 		<script src="resources/jquery.min.js"></script>
 		<link href="resources/select2.min.css" rel="stylesheet" />
 		<script src="resources/select2.min.js"></script>
-		<script src="resources/home.js"></script>
 
 		<link href="resources/bootstrap.min.css" rel="stylesheet" />
 		<script src="resources/bootstrap.min.js"></script>
 		
-		<script type="text/javascript" charset="utf-8">
-			
+		<script type="text/javascript" charset="utf-8">	
 		function onLoad() {
+		/*
 			document.addEventListener("deviceready", onDeviceReady, false);
-		/*	document.addEventListener("resume", onResume, false);
+			document.addEventListener("resume", onResume, false);
 			document.addEventListener("pause", onPause, false);
 			document.addEventListener("online", onOnline, false);
 			document.addEventListener("backbutton", onBackKeyDown, false);
@@ -75,11 +74,9 @@
 		//	navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
 		//	destinationType: Camera.DestinationType.FILE_URI });
 		
-			$.post( "http://52.18.12.164/phonegap/index.html", function( data ) {
-			  $( ".result" ).html( data );
-			});
+			$("#display").val('0');	
 		}
-		/*
+		
 		function onResume() {
 			alert('I knew you were gonna miss me!');
 			return false;
@@ -117,7 +114,7 @@
 			alert('Was I too loud honey?');
 			return false;
 		}
-		*/
+		
 		function alertDismissed() {}
 		function showAlert() {
 			navigator.notification.alert(
@@ -135,11 +132,35 @@
 		function onFail(message) {
 			alert('Failed because: ' + message);
 		}
+		
+		function Clear(){
+			$("#display").val('');
+		}
+		
+		function DigitAdd(digit){
+			var current = parseFloat($("#display").val()).toFixed(2);
+			if(current == undefined || current == NaN) current = 0
+			else{
+				if($("#operation").text() == 'Add') current = parseFloat(parseFloat(current) + parseFloat(digit)).toFixed(2);
+				else current = parseFloat(parseFloat(current) - parseFloat(digit)).toFixed(2);
+			}
+			$("#display").val(current);
+		}
+		
+		function ToggleAdd(){
+			current = $("#operation").text();
+			if(current == 'Add') {
+				$("#operation").text('Sub');
+				$("#operation").removeClass("btn-info").addClass("btn-warning");
+			}else{ 
+				$("#operation").text('Add');
+				$("#operation").removeClass("btn-warning").addClass("btn-info");
+			}
+		}
     </script>
 	
     </head>
     <body onload="onLoad()">
-	<p><a href="#" onclick="showAlert(); return false;">Show Alert</a></p>
     
 	<div class="content"></div>
 	
@@ -148,5 +169,32 @@
 	<script type="text/javascript">
 		app.initialize();
 	</script>
+	
+	<form role="form">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group"><input class="form-control" type="text" id="display" /></div>
+		</div>
+		<div class="row">
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><button class="btn btn-default btn-block" type="submit" id="txtAdd" value="1" onclick="DigitAdd(this.value)">1</button></div>
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><button class="btn btn-default btn-block" type="submit" id="txtAdd" value="2" onclick="DigitAdd(this.value)">2</button></div>
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><button class="btn btn-default btn-block" type="submit" id="txtAdd" value="3" onclick="DigitAdd(this.value)">3</button></div>	
+		</div>
+		<div class="row"></div>
+		<div class="row">
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><button class="btn btn-default btn-block" type="submit" id="txtAdd" value="4" onclick="DigitAdd(this.value)">4</button></div>
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><button class="btn btn-default btn-block" type="submit" id="txtAdd" value="5" onclick="DigitAdd(this.value)">5</button></div>
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><button class="btn btn-default btn-block" type="submit" id="txtAdd" value="6" onclick="DigitAdd(this.value)">6</button></div>	
+		</div>
+		<div class="row">
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><button class="btn btn-default btn-block" type="submit" id="txtAdd" value="7" onclick="DigitAdd(this.value)">7</button></div>
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><button class="btn btn-default btn-block" type="submit" id="txtAdd" value="8" onclick="DigitAdd(this.value)">8</button></div>
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><button class="btn btn-default btn-block" type="submit" id="txtAdd" value="9" onclick="DigitAdd(this.value)">9</button></div>	
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group"><button class="btn btn-default btn-block btn-info form-control" type="submit" id="operation" onclick="ToggleAdd()">Add</button></div>
+		</div>
+	</div>
+	</form>
     </body>
 </html>
