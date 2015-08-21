@@ -36,7 +36,18 @@
 		<link href="resources/bootstrap.min.css" rel="stylesheet" />
 		<script src="resources/bootstrap.min.js"></script>
 		
-		<script type="text/javascript" charset="utf-8">	
+		<link href="js/jquerymobile/jquery.mobile-1.4.5.min.css" rel="stylesheet" />
+		<script src="js/jquerymobile/jquery.mobile-1.4.5.min.js"></script>
+		
+		<script type="text/javascript" charset="utf-8">
+		$(document).ready(function(){
+			 $("#myCarousel").swiperight(function() {
+			  $(this).carousel('prev');
+			});
+		   $("#myCarousel").swipeleft(function() {
+			  $(this).carousel('next');
+		   });
+		});	
 		function onLoad() {
 		
 			document.addEventListener("deviceready", onDeviceReady, false);
@@ -51,118 +62,47 @@
 			document.addEventListener("volumedownbutton", yourCallbackFunction, false);
 			document.addEventListener("volumedownbutton", onVolumeDownKeyDown, false);
 			document.addEventListener("volumeupbutton", onVolumeUpKeyDown, false);
+		
 			}
 		
-		function populateDB(tx) {
-			 tx.executeSql('DROP TABLE IF EXISTS DEMO');
-			 tx.executeSql('CREATE TABLE IF NOT EXISTS DEMO (id unique, data)');
-			 tx.executeSql('INSERT INTO DEMO (id, data) VALUES (1, "First row")');
-			 tx.executeSql('INSERT INTO DEMO (id, data) VALUES (2, "Second row")');
-		}
-		
-		function errorCB(tx, err) {
-			alert("Error processing SQL: "+err);
-		}
-		function successCB() {
-			alert("success!");
-		}
-		
 		function onDeviceReady() {
-		//	var db = window.openDatabase("Database", "1.0", "PhoneGap Demo", 200000);
-		//	db.transaction(populateDB, errorCB, successCB);
-		
-		//	navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
-		//	destinationType: Camera.DestinationType.FILE_URI });
-		
-			$("#display").val('0');	
+			
 		}
 		
 		function onResume() {
-			alert('I knew you were gonna miss me!');
+			alert('Welcome back!');
 			return false;
 		}
 		function onPause() {}
 		function onOnline() {
-			alert('chat with me honey!');
-			return false;	
+			alert('connected to internet.');
 		}
 		function onBackKeyDown(){
-			alert('where you going honey!');
-			return false;
+			alert('back');
 		}
 		function onMenuKeyDown(){
-			alert('pressing on menu!');
-			return false;
+			alert('menu key down');
 		}
 		function onSearchKeyDown(){
-			alert('wat you searching honey!');
-			return false;
+			alert('search key down');
 		}
 		function onStartCallKeyDown(){
-			alert('calling someone');
-			return false;
+			alert('start call');
 		}
 		function onEndCallKeyDown(){
-			alert('You did a good job!');
-			return false;
+			alert('end call');
 		}
 		function onVolumeDownKeyDown(){
-			alert('Yes I was speaking low!');
-			return false;
+			$("#myCarousel").carousel('prev');
 		}
 		function onVolumeUpKeyDown(){
-			alert('Was I too loud honey?');
-			return false;
-		}
-		
-		function alertDismissed() {}
-		function showAlert() {
-			navigator.notification.alert(
-				'You are the winner!',  // message
-				alertDismissed,         // callback
-				'Game Over',            // title
-				'Done'                  // buttonName
-			);
-		}
-		
-		function onSuccess(imageURI) {
-			alert(imageURI);
-		}
-
-		function onFail(message) {
-			alert('Failed because: ' + message);
-		}
-		
-		function Clear(){
-			$("#display").val('');
-		}
-		
-		function DigitAdd(digit){
-			var current = parseFloat($("#display").val()).toFixed(2);
-			if(current == undefined || current == NaN) current = 0
-			else{
-				if($("#operation").text() == 'Add') current = parseFloat(parseFloat(current) + parseFloat(digit)).toFixed(2);
-				else current = parseFloat(parseFloat(current) - parseFloat(digit)).toFixed(2);
-			}
-			$("#display").val(current);
-		}
-		
-		function ToggleAdd(){
-			current = $("#operation").text();
-			if(current == 'Add') {
-				$("#operation").text('Sub');
-				$("#operation").removeClass("btn-info").addClass("btn-warning");
-			}else{ 
-				$("#operation").text('Add');
-				$("#operation").removeClass("btn-warning").addClass("btn-info");
-			}
+			$("#myCarousel").carousel('next');
 		}
     </script>
 	
     </head>
     <body onload="onLoad()">
-    
-	<div class="content"></div>
+	
 	
 	<script type="text/javascript" src="cordova.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
@@ -170,31 +110,104 @@
 		app.initialize();
 	</script>
 	
-	<form role="form">
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group"><input class="form-control" type="text" id="display" /></div>
+	<nav class="navbar navbar-default">
+	  <div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+		  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		  </button>
+		  <a class="navbar-brand" href="#">CIPRIAN</a>
 		</div>
-		<div class="row">
-			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><button class="btn btn-default btn-block" type="submit" id="txtAdd" value="1" onclick="DigitAdd(this.value)">1</button></div>
-			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><button class="btn btn-default btn-block" type="submit" id="txtAdd" value="2" onclick="DigitAdd(this.value)">2</button></div>
-			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><button class="btn btn-default btn-block" type="submit" id="txtAdd" value="3" onclick="DigitAdd(this.value)">3</button></div>	
-		</div>
-		<div class="row"></div>
-		<div class="row">
-			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><button class="btn btn-default btn-block" type="submit" id="txtAdd" value="4" onclick="DigitAdd(this.value)">4</button></div>
-			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><button class="btn btn-default btn-block" type="submit" id="txtAdd" value="5" onclick="DigitAdd(this.value)">5</button></div>
-			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><button class="btn btn-default btn-block" type="submit" id="txtAdd" value="6" onclick="DigitAdd(this.value)">6</button></div>	
-		</div>
-		<div class="row">
-			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><button class="btn btn-default btn-block" type="submit" id="txtAdd" value="7" onclick="DigitAdd(this.value)">7</button></div>
-			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><button class="btn btn-default btn-block" type="submit" id="txtAdd" value="8" onclick="DigitAdd(this.value)">8</button></div>
-			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"><button class="btn btn-default btn-block" type="submit" id="txtAdd" value="9" onclick="DigitAdd(this.value)">9</button></div>	
-		</div>
-		<div class="row">
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group"><button class="btn btn-default btn-block btn-info form-control" type="submit" id="operation" onclick="ToggleAdd()">Add</button></div>
-		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		<!--  <ul class="nav navbar-nav">
+			<li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+			<li><a href="#">Link</a></li>
+			<li class="dropdown">
+			  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+			  <ul class="dropdown-menu">
+				<li><a href="#">Action</a></li>
+				<li><a href="#">Another action</a></li>
+				<li><a href="#">Something else here</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">Separated link</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">One more separated link</a></li>
+			  </ul>
+			</li>
+		</ul> -->
+		  <form class="navbar-form navbar-left" role="search">
+			<div class="form-group">
+			  <input type="text" class="form-control" placeholder="Search">
+			</div>
+		  </form>
+		  <ul class="nav navbar-nav navbar-right">
+			<li><a href="tel:+18002752273"><button class="btn-sucess">Call</button></a></li>
+			<li class="dropdown">
+			  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More... <span class="caret"></span></a>
+			  <ul class="dropdown-menu">
+				<li><a href="#">Wedding photos</a></li>
+				<li><a href="#">Portfolio photos</a></li>
+				<li><a href="#">Nature photos</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">Library</a></li>
+			  </ul>
+			</li>
+		  </ul>
+		</div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+	
+	<div class="row">
+		  <div class="col-md-4">
+			  <!--Carousel-->
+			  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+			  
+				  <!-- Indicators -->
+				  <ol class="carousel-indicators">
+					<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+					<li data-target="#myCarousel" data-slide-to="1"></li>
+					<li data-target="#myCarousel" data-slide-to="2"></li>
+					<li data-target="#myCarousel" data-slide-to="3"></li>
+				  </ol>
+
+				  <!-- Wrapper for slides -->
+				  <div class="carousel-inner" role="listbox">
+					<div class="item active">
+					  <img src="img/a.jpg" alt="Chania">
+					</div>
+
+					<div class="item">
+					  <img src="img/b.jpg" alt="Chania">
+					</div>
+
+					<div class="item">
+					  <img src="img/c.jpg" alt="Flower">
+					</div>
+
+					<div class="item">
+					  <img src="img/d.jpg" alt="Flower">
+					</div>
+				  </div>
+				  <div id="slider-top" class="carousel slide col-md-12" data-ride="myCarousel"><a href="tel:+18002752273"><button class="btn-sucess">Call</button></a></div>
+
+				  <!-- Left and right controls -->
+				  <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+				  </a>
+				  <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+				  </a>
+			</div>
+			  <!--/Carousel-->
+			  	
 	</div>
-	</form>
     </body>
 </html>
