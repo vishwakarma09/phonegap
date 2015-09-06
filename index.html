@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Image search</title>
+
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+	
+	<script src="resources/jquery.min.js"></script>
+	<link rel="stylesheet" href="resources/bootstrap.min.css">
+	<script src="resources/bootstrap.min.js"></script>
+	
+    <script type="text/javascript" charset="utf-8">
+
+// Wait for Cordova to load
+//
+function onload(){
+	alert('onload');
+	document.addEventListener("deviceready", onDeviceReady, false);
+	registerUpload();
+}
+// Cordova is ready
+//
+var parentWindow;
+
+function onDeviceReady() {
+	// external url
+	//parentWindow = window.open('http://52.18.12.164/image/search.html', '_self');
+	registerUpload();
+}
+
+function CameraOpen(){
+	navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+	destinationType: Camera.DestinationType.FILE_URI });	
+}
+
+function onSuccess(imageURI) {
+    var image = document.getElementById('myImage');
+    image.src = imageURI;
+	
+	alert(imageURI);
+}
+
+function onFail(message) {
+    alert('Failed because: ' + message);
+}
+
+function registerUpload(){
+	
+	$("form[name='uploader']").submit(function(e) {
+        var formData = new FormData($(this)[0]);
+
+        $.ajax({
+            url: "http://52.18.12.164/image/image2.php",
+            type: "POST",
+            data: formData,
+            async: false,
+            success: function (msg) {
+                $('#responseImages').html(msg);
+				alert('Search Completed');
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+
+        e.preventDefault();
+    });
+	
+}
+
+
+function succesFileTransfer(){
+	alert('sucess');
+}
+
+function errorFileTransfer(){
+	alert('error');	
+}
+
+</script>
+  </head>
+<body onload="onload()">
+  
+<center><h1> Dress image search</h1></center>
+<hr>
+  
+<div id="DivUploader" class="container-fluid">
+        <form action="http://52.18.12.164/image/image.php" method="post" name="uploader" enctype="multipart/form-data" >
+				<div class="row">
+                	<div class="col-md-12 form-group">
+						<button class="btn btn-info btn-block" id="BtnSelect" onclick="CameraOpen(); return false;">Click a dress!</button>
+					</div>
+                </div>
+                <div class="row">
+                	<div class="col-md-12 form-group">
+						<img id="myImage" alt="" class="img-responsive">
+					</div>
+                </div>
+				<div class="row">
+                        <div class="col-md-12 form-group"><input type="file" name="picture" id="picture"></div>
+                        <div class="col-md-12 form-group"><input type="submit" value="See results!" name="submit" class="btn btn-success btn-block" /></div>
+                </div>
+        </form>
+</div>
+
+<div class="container-fluid">
+	<div class="row"><p class="bg-warning">Search results</p></div>
+	<div id="responseImages" class="row"></div>	
+</div>
+
+</body>
+</html>
